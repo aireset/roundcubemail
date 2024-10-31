@@ -231,4 +231,167 @@ $config['search_scope'] = 'all';  // RC default
 $config['include_host_config'] = true;
 
 // automatically create the above listed default folders on user login
-// $config['create_default_folders'] = true;
+$config['create_default_folders'] = true;
+
+// protect the default folders from renames, deletes, and subscription changes
+$config['protect_default_folders'] = true;
+
+$components = explode('.', $_SERVER["HTTP_HOST"] ?? "");
+
+if (count($components) > 2) {
+    array_shift($components);
+}
+
+$domain = implode('.', $components);
+
+// Session domain: .example.org
+$config['session_domain'] = $_SERVER["HTTP_HOST"] ?? "";
+
+// Automatically add this domain to user names for login
+// Only for IMAP servers that require full e-mail addresses for login
+// Specify an array with 'host' => 'domain' values to support multiple hosts
+// Supported replacement variables:
+// %h - user's IMAP hostname
+// %n - hostname ($_SERVER['SERVER_NAME'])
+// %t - hostname without the first part
+// %d - domain (http hostname, $_SERVER['HTTP_HOST'] without the first part)
+// %z - IMAP domain (IMAP hostname without the first part)
+// For example %n = mail.domain.tld, %t = domain.tld
+$config['username_domain'] = $domain;
+
+$config['default_host'] = "localhost";
+$config['default_port'] = 9143;
+
+$config['smtp_server'] = "localhost";
+$config['smtp_port'] = 25;
+$config['smtp_user'] = '%u';
+$config['smtp_pass'] = '%p';
+$config['smtp_helo_host'] = $_SERVER["HTTP_HOST"] ?? "";
+
+$config['use_secure_urls'] = true;
+$config['force_https'] = true;
+
+// Backend to use for session storage. Can either be 'db' (default), 'redis', 'memcache', or 'php'
+//
+// If set to 'memcache' or 'memcached', a list of servers need to be specified in 'memcache_hosts'
+// Make sure the Memcache extension (https://pecl.php.net/package/memcache) version >= 2.0.0
+// or the Memcached extension (https://pecl.php.net/package/memcached) version >= 2.0.0 is installed.
+//
+// If set to 'redis', a server needs to be specified in 'redis_hosts'
+// Make sure the Redis extension (https://pecl.php.net/package/redis) version >= 2.0.0 is installed.
+//
+// Setting this value to 'php' will use the default session save handler configured in PHP
+$config['session_storage'] = 'db';
+
+// Automatically register user in Roundcube database on successful (IMAP) logon.
+// Set to false if only registered users should be allowed to the webmail.
+// Note: If disabled you have to create records in Roundcube users table by yourself.
+// Note: Roundcube does not manage/create users on a mail server.
+$config['auto_create_user'] = true;
+
+// Enables possibility to log in using email address from user identities
+$config['user_aliases'] = true;
+
+$config['enable_installer'] = false;
+
+// Set true if deleted messages should not be displayed
+// This will make the application run slower
+$config['skip_deleted'] = false;
+
+// Set true to Mark deleted messages as read as well as deleted
+// False means that a message's read status is not affected by marking it as deleted
+$config['read_when_deleted'] = true;
+
+// Set to true to never delete messages immediately
+// Use 'Purge' to remove messages marked as deleted
+$config['flag_for_deletion'] = true;
+$config['delete_always'] = true;
+
+$config['session_lifetime'] = 180;
+
+// Password character set, to change the password for user
+// authentication or for password change operations
+$config['password_charset'] = 'UTF-8';
+
+$config['refresh_interval'] = 300;
+$config['check_all_folders'] = true;
+$config['dont_override'] = Array(
+    'check_all_folders',
+    'refresh_interval',
+    'skin',
+    'acl_advanced_mode'
+);
+
+// Specifies for how many seconds the Undo button will be available
+// after object delete action. Currently used with supporting address book sources.
+// Setting it to 0, disables the feature.
+$config['undo_timeout'] = 10;
+
+$config['upload_progress'] = 2;
+$config['address_template'] = '{street}<br/>{locality} {zipcode}<br/>{country} {region}';
+$config['preview_pane'] = true;
+$config['preview_pane_mark_read'] = 0;
+
+// Behavior if a received message requests a message delivery notification (read receipt)
+// 0 = ask the user,
+// 1 = send automatically,
+// 2 = ignore (never send or ask)
+// 3 = send automatically if sender is in my contacts, otherwise ask the user
+// 4 = send automatically if sender is in my contacts, otherwise ignore
+// 5 = send automatically if sender is a trusted sender, otherwise ask the user
+// 6 = send automatically if sender is a trusted sender, otherwise ignore
+$config['mdn_requests'] = 0;
+
+// Return receipt checkbox default state
+$config['mdn_default'] = false;
+
+// Delivery Status Notification checkbox default state
+$config['dsn_default'] = false;
+
+// store draft message is this mailbox
+// leave blank if draft messages should not be stored
+// NOTE: Use folder names with namespace prefix (INBOX. on Courier-IMAP)
+$config['archive_mbox'] = 'Archive';
+
+// store draft message is this mailbox
+// leave blank if draft messages should not be stored
+// NOTE: Use folder names with namespace prefix (INBOX. on Courier-IMAP)
+$config['drafts_mbox'] = 'Drafts';
+
+// store spam messages in this mailbox
+// NOTE: Use folder names with namespace prefix (INBOX. on Courier-IMAP)
+$config['junk_mbox'] = 'Spam';
+
+// store sent message is this mailbox
+// leave blank if sent messages should not be stored
+// NOTE: Use folder names with namespace prefix (INBOX. on Courier-IMAP)
+$config['sent_mbox'] = 'Sent';
+
+// move messages to this folder when deleting them
+// leave blank if they should be deleted directly
+// NOTE: Use folder names with namespace prefix (INBOX. on Courier-IMAP)
+$config['trash_mbox'] = 'Trash';
+
+
+// log driver:  'syslog', 'stdout' or 'file'.
+$config['log_driver'] = 'file';
+
+// date format for log entries
+// (read http://php.net/manual/en/function.date.php for all format characters)
+$config['log_date_format'] = 'Y-M-d H:i:s O';
+
+// Log sent messages to <log_dir>/sendmail.log or to syslog
+$config['smtp_log'] = true;
+
+// Log successful/failed logins to <log_dir>/userlogins.log or to syslog
+$config['log_logins'] = true;
+
+$config['log_session'] = true;
+
+$config['debug_level'] = 1;
+$config['devel_mode'] = false;
+$config['sql_debug'] = false;
+$config['memcache_debug'] = false;
+$config['imap_debug'] = false;
+$config['ldap_debug'] = false;
+$config['smtp_debug'] = false;
