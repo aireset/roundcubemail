@@ -27,40 +27,208 @@ $config = [];
 //       or (Windows): 'sqlite:///C:/full/path/to/sqlite.db'
 $config['db_dsnw'] = 'mysql://roundcube:pass@localhost/roundcubemail';
 
-// IMAP host chosen to perform the log-in.
-// See defaults.inc.php for the option description.
-$config['imap_host'] = 'localhost:143';
+// Name your service. This is displayed on the login screen and in the window title
+$config['product_name'] = 'Aireset Webmail';
 
-// SMTP server host (for sending mails).
-// See defaults.inc.php for the option description.
-$config['smtp_host'] = 'localhost:587';
-
-// SMTP username (if required) if you use %u as the username Roundcube
-// will use the current username for login
-$config['smtp_user'] = '%u';
-
-// SMTP password (if required) if you use %p as the password Roundcube
-// will use the current user's password for login
-$config['smtp_pass'] = '%p';
+// Logo image replacement. Specifies location of the image as:
+// - URL relative to the document root of this Roundcube installation
+// - full URL with http:// or https:// prefix
+// - URL relative to the current skin folder (when starts with a '/')
+//
+// An array can be used to specify different logos for specific template files
+// The array key specifies the place(s) the logo should be applied to and
+// is made up of (up to) 3 parts:
+// - skin name prefix (always with colon, can be replaced with *)
+// - template name (or * for all templates)
+// - logo type - it is used for logos used on multiple templates and the available types include:
+//      '[favicon]' for favicon
+//      '[print]' for logo on all print templates (e.g. messageprint, contactprint)
+//      '[small]' for small screen logo in supported skins
+//      '[dark]' and '[small-dark]' for dark mode logo in supported skins
+//      '[link]' for adding a URL link to the logo image
+//
+// Example config for skin_logo
+/*
+   [
+     // show the image /images/logo_login_small.png for the Login screen in the Elastic skin on small screens
+     "elastic:login[small]" => "/images/logo_login_small.png",
+     // show the image /images/logo_login.png for the Login screen in the Elastic skin
+     "elastic:login" => "/images/logo_login.png",
+     // add a link to the logo on the Login screen in the Elastic skin
+     "elastic:login[link]" => "https://www.example.com",
+     // add a link to the logo on all screens in the Elastic skin
+     "elastic:*[link]" => "https://www.example.com",
+     // add a link to the logo on all screens for all skins
+     "[link]" => "https://www.example.com",
+     // show the image /images/logo_small.png in the Elastic skin
+     "elastic:*[small]" => "/images/logo_small.png",
+     // show the image /images/larry.png in the Larry skin
+     "larry:*" => "/images/larry.png",
+     // show the image /images/logo_login.png on the login template in all skins
+     "login" => "/images/logo_login.png",
+     // show the image /images/logo_print.png for all print type logos in all skins
+     "[print]" => "/images/logo_print.png",
+   ];
+*/
+$config['skin_logo'] = 'https://aireset.com.br/wp-content/logo_para_clientes/icone-preto.png';
 
 // provide an URL where a user can get support for this Roundcube installation
 // PLEASE DO NOT LINK TO THE ROUNDCUBE.NET WEBSITE HERE!
-$config['support_url'] = '';
-
-// Name your service. This is displayed on the login screen and in the window title
-$config['product_name'] = 'Roundcube Webmail';
-
-// This key is used to encrypt the users imap password which is stored
-// in the session record. For the default cipher method it must be
-// exactly 24 characters long.
-// YOUR KEY MUST BE DIFFERENT THAN THE SAMPLE VALUE FOR SECURITY REASONS
-$config['des_key'] = 'rcmail-!24ByteDESkey*Str';
+$config['support_url'] = 'https://aireset.com.br';
 
 // List of active plugins (in plugins/ directory)
 $config['plugins'] = [
-    'archive',
-    'zipdownload',
+        'jqueryui',
+        'password',
+        'markasjunk',
+        'managesieve',
+        'archive',
+        'zipdownload',
+        'new_user_dialog',
+        'markasjunk',
+        'attachment_reminder',
+//      'newmail_notifier',
+//      'emoticons',
+//      'contextmenu',
+//      'contextmenu_folder',
+//      'swipe',
+//      'persistent_login',
+//      'show_folder_size',
+//      'html5_notifier',
+//      'customizr',
+//      'advanced_search',
+//      'account_details',
+//      'quota',
+//      'banner_ics',
+//      'removeattachments',
+//      'sauserprefs',
+//      'ident_switch',
+//      'otherserver',
+//      'automatic_addressbook',
+//      'attachment_preview',
+//      'lastlogin',
+//      'blacklist',
 ];
 
-// skin name: folder from skins/
-$config['skin'] = 'elastic';
+
+// 0 - many identities with possibility to edit all params
+// 1 - many identities with possibility to edit all params but not email address
+// 2 - one identity with possibility to edit all params
+// 3 - one identity with possibility to edit all params but not email address
+// 4 - one identity with possibility to edit only signature
+$config["identities_level"] = 3;
+
+// show up to X items in messages list view
+$config['mail_pagesize'] = 100;
+
+// sort contacts by this col (preferably either one of name, firstname, surname)
+$config['message_show_email'] = true;
+
+// By default the signature is placed depending on cursor position (reply_mode).
+// Sometimes it might be convenient to start the reply on top but keep
+// the signature below the quoted text (sig_below = true).
+$config['sig_below'] = false;
+
+// compose html formatted messages by default
+//  0 - never,
+//  1 - always,
+//  2 - on reply to HTML message,
+//  3 - on forward or reply to HTML message
+//  4 - always, except when replying to plain text message
+$config['htmleditor'] = 1;
+
+// default messages sort column. Use empty value for default server's sorting,
+// or 'arrival', 'date', 'subject', 'from', 'to', 'fromto', 'size', 'cc'
+$config['message_sort_col'] = 'arrival';
+
+// How many seconds must pass between emails sent by a user
+$config['sendmail_delay'] = 5;
+
+// Maximum number of recipients per message (including To, Cc, Bcc).
+// Default: 0 (no limit)
+$config['max_recipients'] = 300;
+
+// When replying:
+// -1 - don't cite the original message
+// 0  - place cursor below the original message
+// 1  - place cursor above original message (top posting)
+// 2  - place cursor above original message (top posting), but do not indent the quote
+$config['reply_mode'] = 1;
+
+// When replying strip original signature from message
+$config['strip_existing_sig'] = false;
+
+// Allow browser-autocompletion on login form.
+// 0 - disabled, 1 - username and host only, 2 - username, host, password
+$config['login_autocomplete'] = 2;
+
+// display remote resources (inline images, styles)
+// 0 - Never, always ask
+// 1 - Ask if sender is not in address book
+// 2 - Always allow
+$config['show_images'] = 2;
+
+// Place replies in the folder of the message being replied to
+$config['reply_same_folder'] = true;
+
+// Sets default mode of Forward feature to "forward as attachment"
+$config['forward_attachment'] = true;
+
+// default messages sort column. Use empty value for default server's sorting,
+// or 'arrival', 'date', 'subject', 'from', 'to', 'fromto', 'size', 'cc'
+$config['message_sort_col'] = 'arrival';
+
+// default messages sort order
+$config['message_sort_order'] = 'DESC';
+
+// These cols are shown in the message list. Available cols are:
+// subject, from, to, fromto, cc, replyto, date, size, status, flag, attachment, priority
+$config['list_cols'] = array('subject', 'status', 'fromto', 'date', 'size', 'flag', 'attachment');
+
+// the default locale setting (leave empty for auto-detection)
+// RFC1766 formatted language name like en_US, de_DE, de_CH, fr_FR, pt_BR
+$config['language'] = 'pt_BR';
+
+// use this timezone to display date/time
+// valid timezone identifiers are listed here: php.net/manual/en/timezones.php
+// 'auto' will use the browser's timezone settings
+$config['timezone'] = 'America/Sao_Paulo';
+
+// use this format for date display (date or strftime format)
+$config['date_format'] = 'd/m/Y';
+
+// use this format for detailed date/time formatting (derived from date_format and time_format)
+$config['date_long'] = 'd/m/Y H:i';
+
+// Message size limit. Note that SMTP server(s) may use a different value.
+// This limit is verified when user attaches files to a composed message.
+// Size in bytes (possible unit suffix: K, M, G)
+$config['max_message_size'] = '1324M';
+
+// If true all folders will be checked for recent messages
+$config['check_all_folders'] = true;
+
+// Default messages listing mode. One of 'threads' or 'list'.
+$config['default_list_mode'] = 'threads';
+
+// Use this charset as fallback for message decoding
+$config['default_charset'] = 'UTF-8';
+
+// When replying strip original signature from message
+$config['strip_existing_sig'] = false;
+
+// Maximum size of uploaded image in kilobytes
+// Images (in html signatures) are stored in database as data URIs
+$config['identity_image_size'] = 256;
+
+// search_scope options
+//
+// valid options are:
+// base, sub, all
+$config['search_scope'] = 'all';  // RC default
+
+// include individual domain configs
+$config['include_host_config'] = true;
+
+// automatically create the above listed default folders on user login
+// $config['create_default_folders'] = true;
